@@ -1,5 +1,4 @@
 from utils import *
-import timeit
 
 INFINITY = 10
 PLAYER = "O"

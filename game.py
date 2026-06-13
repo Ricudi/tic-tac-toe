@@ -79,6 +79,17 @@ def Main():
     mouse_down = False
 
     while running:
+
+        #enemy AI
+        if (turn == "O"):
+            AIChoice = (minimax2.Minimax(moves_dict, turn))
+            print(AIChoice)
+            AIMove = Move("O", AIChoice[1])
+            moves.append(AIMove)
+            moves_dict[AIMove.pos] = AIMove.char
+            turn = SwapTurn(turn)
+
+
         #draw grid
         grid = DrawGrid((100,0,0,0))    #this should be transparent, but it renders alpha value wrong, so instead it's
                                         #set to this random non-opaque color as background
@@ -113,14 +124,6 @@ def Main():
                         moves_dict[click_pos] = t.char
                         turn = SwapTurn(turn) 
 
-                        #enemy AI
-                        AIChoice = (minimax2.Minimax(moves_dict, turn))
-                        print(AIChoice)
-                        AIMove = Move("O", AIChoice[1])
-                        moves.append(AIMove)
-                        moves_dict[AIMove.pos] = AIMove.char
-                        turn = SwapTurn(turn)
-
                 #reset position
                 base_pos = position
                 offset = (0,0)
@@ -139,8 +142,8 @@ def Main():
         pg.display.update()
 
 pg.init()
-#enemy AI
-AIChoice = (minimax2.Minimax(moves_dict, "O"))
+#enemy AI start
+AIChoice = (0,(0,0))
 print(AIChoice)
 AIMove = Move("O", AIChoice[1])
 moves.append(AIMove)

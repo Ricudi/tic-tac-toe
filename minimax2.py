@@ -139,7 +139,6 @@ def Minimax(d:dict, turn, depth = 0):
         return min_value
     ####
     
-
 test = {
     (3,0):"O",
     (2,0):"O",
@@ -148,17 +147,5 @@ test = {
     (0,4):"X"
 }
 
-MAX_DEPTH = 3
-ADMISSABLE_DISTANCE = 1
-t1 = timeit.default_timer()
-print(Minimax(test, "O"))
-t2 = timeit.default_timer()
-print("time1: ", t2-t1)
 
-MAX_DEPTH = 2
-ADMISSABLE_DISTANCE = 3
-t1 = timeit.default_timer()
-print(Minimax(test, "O"))
-t2 = timeit.default_timer()
-print("time2: ", t2-t1)
 
