@@ -91,8 +91,3 @@ test = {
     (0,3):"X",
     (0,4):"X"
 }
-
-t1 = timeit.default_timer()
-print(EvaluatePosition(test))
-t2 = timeit.default_timer()
-print("time: ", t2-t1)
