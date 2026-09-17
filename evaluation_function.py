@@ -1,8 +1,15 @@
 from utils import *
+from functools import cache
 
 INFINITY = 10
 PLAYER = "O"
 values = {} #dictionary for storing values of all positions
+
+def SwapTurn(player):
+    if player == "X":
+        return "O"
+    else:
+        return "X"
 
 def NormalisationFunction(value):
     """
@@ -10,77 +17,46 @@ def NormalisationFunction(value):
     """
     return (10*value)/(value + 12)
 
-def EvaluatePosition(position: dict):
-    position_value = 0
-    vs= 0
-    for move in position.keys():
-        #set hard-winning/losing positions (5 in a row = win/lose)
-        #5 in a row
-        if eval(" and ".join([f"(position.get(AddVectors2D(({-k},0), move), 'empty') == position[move])" for k in range(-4,0)])):
-            if position[move] == PLAYER:
-                return INFINITY
-            else:
-                return -INFINITY
+def LengthOfChain(board, last_move_position, player):
+    """checks how many moves by the same player are in a row for each direction
+        returns a list, where each entry corresponds to length in each direction;
+        0: up/down, 1: right-up diagonal, 2:left/right, 3:right-down diagonal"""
+    L =[]
 
-        #5 in a column 
-        if eval(" and ".join([f"(position.get(AddVectors2D((0,{-k}), move), 'empty') == position[move])" for k in range(-4,0)])):
-            if position[move] == PLAYER:
-                return INFINITY
-            else:
-                return -INFINITY
-            
-        #5 on north-east diagonal
-        if eval(" and ".join([f"(position.get(AddVectors2D(({-k},{-k}), move), 'empty') == position[move])" for k in range(-4,0)])):
-            if position[move] == PLAYER:
-                return INFINITY
-            else:
-                return -INFINITY
-            
-        #5 on north-west diagonal
-        if eval(" and ".join([f"(position.get(AddVectors2D(({k},{-k}), move), 'empty') == position[move])" for k in range(-4,0)])):
-            if position[move] == PLAYER:
-                return INFINITY
-            else:
-                return -INFINITY
-
-        move_value = 0
-        #checks how many moves in a row are there
-        vs = 0
-        for k in range(-4, 0):
-            if (position.get(AddVectors2D((k,0), move), "empty") == position[move]):
-                vs += 1
-        move_value = max(move_value, vs*2)
-        
-        #checks how many moves in a column are there
-        vs = 0
-        for k in range(-4, 0):
-            if (position.get(AddVectors2D((0,k), move), "empty") == position[move]):
-                vs += 1
-        move_value = max(move_value, vs*2)
-        
-        #checks how many moves on a north-east diagonal are there
-        vs = 0
-        for k in range(-4, 0):
-            if (position.get(AddVectors2D((-k,-k), move), "empty") == position[move]):
-                vs += 1
-        move_value = max(move_value, vs*2)
-
-        #checks how many moves on a north-west diagonal are there
-        vs = 0
-        for k in range(-4, 0):
-            if (position.get(AddVectors2D((k,-k), move), "empty") == position[move]):
-                vs += 1
-        move_value = max(move_value, vs*2)
-
-        if position[move] == PLAYER:
-            position_value += move_value
-        else:
-            position_value -= move_value
+    directions = [(1,0), (1,1), (0,1), (-1,1)]
+    x0, y0 = last_move_position
     
-    if position_value >= 0:
-        return NormalisationFunction(position_value)
-    else:
-        return -NormalisationFunction(-position_value)
+    for d in directions:
+        x,y = x0+d[0], y0+d[1]    #x, y coordinates of currently  probed position
+        length = 1 #length of successive moves from player
+        while board.get((x, y)) == player:
+            x,y = x+d[0], y+d[1] #set to look at different position
+            length += 1
+        x,y = x0-d[0], y0-d[1]
+        while board.get((x,y)) == player:
+            x,y = x-d[0], y-d[1]
+            length += 1
+        L.append(length)
+    return L
+
+def EvaluatePosition(board: dict, player = "O"):
+    best_player_chain = 0
+    best_opponent_chain = 0
+
+    for pos, piece in board.items():
+        chains = LengthOfChain(board, pos, piece)
+        if piece == player:
+            best_player_chain = max(best_player_chain, max(chains))
+        else:
+            best_opponent_chain = max(best_opponent_chain, max(chains))
+
+    if best_player_chain >= 5:
+        return INFINITY
+    if best_opponent_chain >= 5:
+        return -INFINITY
+
+    return NormalisationFunction(best_player_chain) - NormalisationFunction(best_opponent_chain)
+
 
 
 test = {
@@ -88,5 +64,10 @@ test = {
     (2,0):"O",
     (0,2):"X",
     (0,3):"X",
-    (0,4):"X"
+    (0,4):"X",
+    (0,5):"X",
+    (0,6):"O"
 }
+
+#print(EvaluatePosition(test, (0,5), "X"))
+#print(EvaluatePosition(test, (0,5)))

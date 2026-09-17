@@ -48,7 +48,7 @@ class TestImage():
         rect = surface.get_rect()
         pg.draw.circle(surface, "green", rect.center, 5)
         return surface
-    def CreateChar(self, char):
+    def CreateChar( self, char):
         if char == "O":
             return pg.image.load("piškvorky\images\O.png")
         else:
@@ -65,6 +65,24 @@ class Move():
         else:
             return pg.image.load("piškvorky\images\X.png")
 
+def CheckWin(player) -> bool:
+    directions = [(1,0), (1,1), (0,1), (-1,1)]
+    x0, y0 = moves[-1].pos
+
+    
+    for d in directions:
+        x,y = x0+d[0], y0+d[1]    #x, y coordinates of currently  probed position
+        length = 1 #length of successive moves from player
+        while moves_dict.get((x, y)) == player:
+            x,y = x+d[0], y+d[1] #set to look at different position
+            length += 1
+        x,y = x0-d[0], y0-d[1]
+        while moves_dict.get((x,y)) == player:
+            x,y = x-d[0], y-d[1]
+            length += 1
+        if length >= 5:
+            return True #if there are more than 5 from the same player in a row
+    return False    #if there aren't 5 in a row in any direction
 
 
 def Main():
@@ -83,10 +101,12 @@ def Main():
         #enemy AI
         if (turn == "O"):
             AIChoice = (minimax2.Minimax(moves_dict, turn))
-            print(AIChoice)
             AIMove = Move("O", AIChoice[1])
             moves.append(AIMove)
             moves_dict[AIMove.pos] = AIMove.char
+            if CheckWin(turn):
+                print("AI vyhralo")
+                running = False
             turn = SwapTurn(turn)
 
 
@@ -122,6 +142,9 @@ def Main():
                         t = Move(turn, click_pos)
                         moves.append(t)
                         moves_dict[click_pos] = t.char
+                        if CheckWin(turn):
+                            print("Vyhrál jsi")
+                            running = False
                         turn = SwapTurn(turn) 
 
                 #reset position
@@ -142,12 +165,12 @@ def Main():
         pg.display.update()
 
 pg.init()
-#enemy AI start
-AIChoice = (0,(0,0))
-print(AIChoice)
-AIMove = Move("O", AIChoice[1])
-moves.append(AIMove)
-moves_dict[AIMove.pos] = AIMove.char
+if input("type 'Y' if AI should start ").lower() == "y":
+    #enemy AI start
+    AIChoice = (0,(0,0))
+    AIMove = Move("O", AIChoice[1])
+    moves.append(AIMove)
+    moves_dict[AIMove.pos] = AIMove.char
 turn = "X"
 Main()
 pg.quit()
