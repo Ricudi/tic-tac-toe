@@ -23,9 +23,9 @@ ADMISSABLE DISTANCE = 1
 number probably won't have effect on the AI
 
 MODE = "DEFENSIVE"  / "OFFENSIVE"
-on DEFENSIVE, AI will be forced to defend unblocked threats,
+#on DEFENSIVE, AI will be forced to defend unblocked threats,
 even if AI itself could win sooner. This is the recommended option.
-on OFFENSIVE, AI gets the option to not defend unblocked threats,
+#on OFFENSIVE, AI gets the option to not defend unblocked threats,
 however it will often not defend in the wrong position
 
 
