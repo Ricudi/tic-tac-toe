@@ -26,6 +26,6 @@ MODE = "DEFENSIVE"  / "OFFENSIVE"
 #on DEFENSIVE, AI will be forced to defend unblocked threats,
 even if AI itself could win sooner. This is the recommended option.
 #on OFFENSIVE, AI gets the option to not defend unblocked threats,
-however it will often not defend in the wrong position
+however it will often not defend in certain positions
 
 
