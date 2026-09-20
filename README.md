@@ -9,7 +9,7 @@ Spreading your moves too much may result in unreasonably poor performance.
 
 Recomended constants in minimax:
 PLAYER = "O"             
-#this one probably can't be changed
+#this one can't be changed
 
 MAX_DEPTH = 4 or 5
 #4 is faster, but 5 leads to smarter AI.
