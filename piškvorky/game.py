@@ -50,9 +50,9 @@ class TestImage():
         return surface
     def CreateChar( self, char):
         if char == "O":
-            return pg.image.load("piškvorky\images\O.png")
+            return pg.image.load("images\O.png")
         else:
-            return pg.image.load("piškvorky\images\X.png")
+            return pg.image.load("images\X.png")
         
 class Move():
     def __init__(self, char, pos):
@@ -61,9 +61,9 @@ class Move():
         self.pos = pos      #stored in grid coordinates
     def CreateChar(self, char):
         if char == "O":
-            return pg.image.load("piškvorky\images\O.png")
+            return pg.image.load("images\O.png")
         else:
-            return pg.image.load("piškvorky\images\X.png")
+            return pg.image.load("images\X.png")
 
 def CheckWin(player) -> bool:
     directions = [(1,0), (1,1), (0,1), (-1,1)]

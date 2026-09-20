@@ -4,7 +4,7 @@ from utils import *
 import evaluation_function
 
 PLAYER = "O"        #what side does ai play
-MAX_DEPTH = 5       #depth of minimax algorithm
+MAX_DEPTH = 4       #depth of minimax algorithm
 ADMISSABLE_DISTANCE = 1 #max distance of admissable moves
 INFINITY = 10
 MODE = "DEFENSIVE"    #"DEFENSIVE" / "OFFENSIVE"
