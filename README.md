@@ -19,8 +19,9 @@ Values less than 4 are possible and lead to fast AI, although not very smart.
 They are not recommended.
 
 ADMISSABLE DISTANCE = 1  
-#since admissable rework, 1 is enough and increasing this 
-number probably won't have effect on the AI
+#since admissable rework, 1 is enough for a reasonable AI. 
+Having bigger admissable distance improves the AI, but at too big of a computational cost.
+
 
 MODE = "DEFENSIVE"  / "OFFENSIVE"
 #on DEFENSIVE, AI will be forced to defend unblocked threats,
